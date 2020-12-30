@@ -12,6 +12,7 @@ namespace Dawdler
 	{
 		public override void ConfigureServices(ServiceConfigurationContext context)
 		{
+			context.Services.ConfigureHttpClient();
 			context.Services.AddHostedService<DawdlerHostedService>();
 		}
 	}
