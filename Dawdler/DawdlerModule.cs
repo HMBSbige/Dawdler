@@ -5,7 +5,8 @@ using Volo.Abp.Modularity;
 namespace Dawdler
 {
 	[DependsOn(
-		typeof(AbpAutofacModule)
+		typeof(AbpAutofacModule),
+		typeof(DawdlerApplicationModule)
 	)]
 	public class DawdlerModule : AbpModule
 	{
