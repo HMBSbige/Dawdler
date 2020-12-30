@@ -1,3 +1,4 @@
+using Dawdler.BilibiliDailyTasks;
 using Dawdler.Configs;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
