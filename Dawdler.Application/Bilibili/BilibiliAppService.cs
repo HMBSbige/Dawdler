@@ -83,12 +83,12 @@ namespace Dawdler.Bilibili
 				}
 				catch (BilibiliNoLoginException)
 				{
-					_logger.LogError(@"{0} 账号异常：未登录", user.Username);
+					_logger.LogError(@"[{0}] 账号异常：未登录", user.Username);
 					throw;
 				}
 				catch (Exception ex)
 				{
-					_logger.LogError(ex, @"{0} 每日任务执行出错，重试 {1}", user.Username, ++i);
+					_logger.LogError(ex, @"[{0}] 每日任务执行出错，重试 {1}", user.Username, ++i);
 					await Task.Delay(TimeSpan.FromSeconds(i), token);
 				}
 			} while (i < MaxDailyTaskRetryTimes);

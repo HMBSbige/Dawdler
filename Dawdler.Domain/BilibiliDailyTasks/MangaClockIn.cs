@@ -42,12 +42,12 @@ namespace Dawdler.BilibiliDailyTasks
 				throw new ArgumentNullException(nameof(User));
 			}
 
-			_logger.LogInformation(@"{0} 开始每日漫画签到", User.Username);
+			_logger.LogInformation(@"[{0}] 开始每日漫画签到", User.Username);
 			try
 			{
 				if (await _manager.MangaClockInAsync(token) is false)
 				{
-					throw new Exception(@"签到失败，未知错误");
+					throw new Exception(@"每日漫画签到失败，未知错误");
 				}
 			}
 			catch (HttpRequestException ex) when (ex.Message.Contains(@"uid must > 0"))
