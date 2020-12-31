@@ -1,4 +1,5 @@
 using Dawdler.BilibiliDailyTasks;
+using Dawdler.BilibiliUsers;
 using Dawdler.Configs;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ namespace Dawdler.Bilibili
 		private readonly ILogger _logger;
 		private readonly BilibiliUsersConfig _usersConfig;
 		private readonly IEnumerable<IBilibiliDailyTask> _dailyTasks;
+		private const int MaxDailyTaskRetryTimes = 5;
 
 		public BilibiliAppService(
 			ILogger<BilibiliAppService> logger,
@@ -34,7 +36,7 @@ namespace Dawdler.Bilibili
 
 				var day = RunDailyTaskAsync(token);
 
-				await day;
+				await day;//TODO 异常
 
 				var wait = TimeSpan.FromMinutes(1);
 				_logger.LogInformation($@"等待 {wait} 后执行");
@@ -47,18 +49,49 @@ namespace Dawdler.Bilibili
 			while (!token.IsCancellationRequested)
 			{
 				var countdown = await IAppService.GetNextDayCountdownAsync();
-				foreach (var user in _usersConfig.Users)
+
+				foreach (var task in _dailyTasks)
 				{
-					foreach (var task in _dailyTasks)
+					foreach (var user in _usersConfig.Users)
 					{
-						task.User = user;
-						await task.RunAsync(token);
+						try
+						{
+							await RunDailyTaskAsync(task, user, token);
+						}
+						catch (BilibiliNoLoginException)
+						{
+							//TODO continue;
+						}
 					}
 				}
 
 				_logger.LogInformation($@"每日任务完成，等待 {countdown} 后执行");
 				await Task.Delay(countdown, token);
 			}
+		}
+
+		private async ValueTask RunDailyTaskAsync(IBilibiliDailyTask task, BilibiliUser user, CancellationToken token)
+		{
+			task.User = user;
+			var i = 0;
+			do
+			{
+				try
+				{
+					await task.RunAsync(token);
+					break;
+				}
+				catch (BilibiliNoLoginException)
+				{
+					_logger.LogError(@"{0} 账号异常：未登录", user.Username);
+					throw;
+				}
+				catch (Exception ex)
+				{
+					_logger.LogError(ex, @"{0} 每日任务执行出错，重试 {1}", user.Username, ++i);
+					await Task.Delay(TimeSpan.FromSeconds(i), token);
+				}
+			} while (i < MaxDailyTaskRetryTimes);
 		}
 	}
 }

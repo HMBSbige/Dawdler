@@ -2,10 +2,10 @@ using BilibiliApi.Clients;
 using BilibiliApi.Model.Login.Password.OAuth2;
 using Dawdler.Configs;
 using Dawdler.Utils;
-using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -14,7 +14,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace Dawdler.BilibiliUsers
 {
-	[UsedImplicitly]
+	[JetBrains.Annotations.UsedImplicitly]
 	public class BilibiliUserManager : ITransientDependency
 	{
 		private readonly ILogger _logger;
@@ -33,27 +33,35 @@ namespace Dawdler.BilibiliUsers
 			_usersConfig = usersConfig;
 		}
 
-		private BilibiliApiClient CreateClient()
+		private BilibiliApiClient CreateClient([NotNull] BilibiliUser? user)
 		{
-			if (User is null)
+			if (user is null)
 			{
-				throw new ArgumentNullException(nameof(User));
+				throw new ArgumentNullException(nameof(user));
 			}
 
 			var client = _clientFactory.CreateClient(HttpClientName.Bilibili);
-			if (!string.IsNullOrWhiteSpace(User.Cookie))
+			if (!string.IsNullOrWhiteSpace(user.Cookie))
 			{
-				_logger.LogDebug($@"Cookie: {User.Cookie}");
-				client.DefaultRequestHeaders.Add(@"Cookie", User.Cookie);
+				_logger.LogDebug($@"Cookie: {user.Cookie}");
+				client.DefaultRequestHeaders.Add(@"Cookie", user.Cookie);
 			}
 
 			return new BilibiliApiClient(client);
 		}
 
-		public async Task<bool> CheckLoginStatusAsync(CancellationToken token)
+		public async Task CheckLoginStatusAsync(CancellationToken token)
 		{
-			var client = CreateClient();
-			return await client.CheckLoginStatusAsync(token);
+			var client = CreateClient(User);
+			try
+			{
+				User.IsLogin = await client.CheckLoginStatusAsync(token);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, @"检查登录状态失败");
+				User.IsLogin = null;
+			}
 		}
 
 		public async Task LoginAsync(CancellationToken token)
@@ -63,7 +71,7 @@ namespace Dawdler.BilibiliUsers
 				throw new BilibiliNoLoginException();
 			}
 
-			var client = CreateClient();
+			var client = CreateClient(User);
 			var message = await client.LoginAsync(User.Username, User.Password, token);
 
 			var tokenInfo = message.data!.token_info!;
@@ -71,10 +79,17 @@ namespace Dawdler.BilibiliUsers
 			User.RefreshToken = tokenInfo.refresh_token!;
 
 			var cookies = message.data.cookie_info!.cookies!;
-			User.Csrf = cookies.Single(x => x.name == @"bili_jct").value!;
+			User.Csrf = cookies.First(x => x.name == @"bili_jct").value!;
 			User.Cookie = ToCookie(cookies);
+			User.IsLogin = true;
 
 			await _usersConfig.SaveAsync(token);
+		}
+
+		public async Task<bool?> MangaClockInAsync(CancellationToken token)
+		{
+			var client = CreateClient(User);
+			return await client.MangaClockInAsync(User.AccessToken, token);
 		}
 
 		private static string ToCookie(IEnumerable<BilibiliCookie> cookies)

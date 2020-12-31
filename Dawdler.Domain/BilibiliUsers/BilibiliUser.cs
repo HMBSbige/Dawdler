@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Dawdler.BilibiliUsers
 {
 	public record BilibiliUser
@@ -16,5 +18,8 @@ namespace Dawdler.BilibiliUsers
 		public string Csrf { get; set; } = string.Empty;
 
 		public string Cookie { get; set; } = string.Empty;
+
+		[JsonIgnore]
+		public bool? IsLogin { get; set; } = null;
 	}
 }

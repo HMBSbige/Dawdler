@@ -9,10 +9,11 @@ using System;
 Log.Logger = new LoggerConfiguration()
 #if DEBUG
 		.MinimumLevel.Debug()
+		.MinimumLevel.Override(@"Microsoft", LogEventLevel.Information)
 #else
 		.MinimumLevel.Information()
+		.MinimumLevel.Override(@"Microsoft", LogEventLevel.Warning)
 #endif
-		.MinimumLevel.Override(@"Microsoft", LogEventLevel.Information)
 		.MinimumLevel.Override(@"Volo.Abp", LogEventLevel.Warning)
 		.Enrich.FromLogContext()
 		.WriteTo.Async(c => c.Console(outputTemplate: Constants.OutputTemplate))
