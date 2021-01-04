@@ -25,8 +25,7 @@ jobs:
 
     - name: Upload .NET App
       continue-on-error: true
-      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.ProjectName }}
-        path: ${{ env.ProjectName }}\bin\${{ env.Configuration }}\${{ env.NET_TFM }}\publish\
+        path: ${{ env.ProjectName }}/bin/${{ env.Configuration }}/${{ env.NET_TFM }}/publish/
