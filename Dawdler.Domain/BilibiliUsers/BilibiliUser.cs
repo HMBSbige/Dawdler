@@ -20,6 +20,6 @@ namespace Dawdler.BilibiliUsers
 		public string Cookie { get; set; } = string.Empty;
 
 		[JsonIgnore]
-		public bool? IsLogin { get; set; } = null;
+		public bool? IsLogin { get; set; }
 	}
 }
