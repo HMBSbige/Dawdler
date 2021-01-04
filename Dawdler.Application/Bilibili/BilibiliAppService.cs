@@ -61,9 +61,9 @@ namespace Dawdler.Bilibili
 					await LoginAsync(user, token);
 				}
 
-				foreach (var task in _dailyTasks)
+				foreach (var user in _usersConfig.Users.Where(user => user.IsLogin is true))
 				{
-					foreach (var user in _usersConfig.Users.Where(user => user.IsLogin is true))
+					foreach (var task in _dailyTasks)
 					{
 						await RunDailyTaskAsync(task, user, token);
 					}

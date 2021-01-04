@@ -1,5 +1,6 @@
 using BilibiliApi.Clients;
 using BilibiliApi.Model.Login.Password.OAuth2;
+using BilibiliApi.Model.Manga.GetClockInInfo;
 using Dawdler.Configs;
 using Dawdler.Utils;
 using Microsoft.Extensions.Logging;
@@ -91,6 +92,18 @@ namespace Dawdler.BilibiliUsers
 		{
 			var client = CreateClient(User);
 			return await client.MangaClockInAsync(User.AccessToken, token);
+		}
+
+		public async Task<bool?> ShareComicAsync(CancellationToken token)
+		{
+			var client = CreateClient(User);
+			return await client.ShareComicAsync(User.AccessToken, token);
+		}
+
+		public async Task<GetClockInInfoMessage> GetMangaClockInInfoAsync(CancellationToken token)
+		{
+			var client = CreateClient(User);
+			return await client.GetMangaClockInInfoAsync(User.AccessToken, token);
 		}
 
 		private static string ToCookie(IEnumerable<BilibiliCookie> cookies)
