@@ -54,6 +54,7 @@ namespace Dawdler.BilibiliDailyTasks
 			{
 				throw new BilibiliNoLoginException();
 			}
+			_logger.LogInformation(@"[{0}] 每日漫画签到成功", User.Username);
 		}
 	}
 }

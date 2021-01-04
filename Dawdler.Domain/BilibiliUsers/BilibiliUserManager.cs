@@ -11,10 +11,11 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
+using UsedImplicitly = JetBrains.Annotations.UsedImplicitlyAttribute;
 
 namespace Dawdler.BilibiliUsers
 {
-	[JetBrains.Annotations.UsedImplicitly]
+	[UsedImplicitly]
 	public class BilibiliUserManager : ITransientDependency
 	{
 		private readonly ILogger _logger;
@@ -68,7 +69,7 @@ namespace Dawdler.BilibiliUsers
 		{
 			if (string.IsNullOrWhiteSpace(User?.Username) || string.IsNullOrWhiteSpace(User.Password))
 			{
-				throw new BilibiliNoLoginException();
+				throw new BilibiliNoLoginException(@"无用户名或密码");
 			}
 
 			var client = CreateClient(User);

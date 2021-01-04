@@ -66,7 +66,7 @@ namespace Dawdler.Configs
 			{
 				await using var _ = await _lock.ReadLockAsync(token);
 
-				await using var fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete, 4096, true);
+				await using var fs = File.OpenRead(FilePath);
 
 				await LoadFromStreamAsync(fs, token);
 			}
