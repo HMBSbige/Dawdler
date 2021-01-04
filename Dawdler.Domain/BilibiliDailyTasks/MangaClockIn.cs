@@ -11,41 +11,23 @@ namespace Dawdler.BilibiliDailyTasks
 {
 	[UsedImplicitly]
 	[ExposeServices(typeof(MangaClockIn), typeof(IBilibiliDailyTask), typeof(IDailyTask))]
-	public class MangaClockIn : IBilibiliDailyTask
+	public class MangaClockIn : BilibiliDailyTask
 	{
-		private readonly ILogger _logger;
-		private readonly BilibiliUserManager _manager;
-
-		private BilibiliUser? _user;
-		public BilibiliUser? User
+		public MangaClockIn(ILogger<BilibiliDailyTask> logger, BilibiliUserManager manager) : base(logger, manager)
 		{
-			get => _user;
-			set
-			{
-				_user = value;
-				_manager.User = User;
-			}
 		}
 
-		public MangaClockIn(
-			ILogger<MangaClockIn> logger,
-			BilibiliUserManager manager)
-		{
-			_logger = logger;
-			_manager = manager;
-		}
-
-		public async ValueTask RunAsync(CancellationToken token)
+		public override async ValueTask RunAsync(CancellationToken token)
 		{
 			if (User is null)
 			{
 				throw new ArgumentNullException(nameof(User));
 			}
 
-			_logger.LogInformation(@"[{0}] 开始每日漫画签到", User.Username);
+			Logger.LogInformation(@"[{0}] 开始每日漫画签到", User.Username);
 			try
 			{
-				if (await _manager.MangaClockInAsync(token) is false)
+				if (await Manager.MangaClockInAsync(token) is false)
 				{
 					throw new Exception(@"每日漫画签到失败，未知错误");
 				}
@@ -54,7 +36,7 @@ namespace Dawdler.BilibiliDailyTasks
 			{
 				throw new BilibiliNoLoginException();
 			}
-			_logger.LogInformation(@"[{0}] 每日漫画签到成功", User.Username);
+			Logger.LogInformation(@"[{0}] 每日漫画签到成功", User.Username);
 		}
 	}
 }
