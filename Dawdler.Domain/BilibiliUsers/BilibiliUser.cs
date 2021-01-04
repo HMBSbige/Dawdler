@@ -1,7 +1,9 @@
+using JetBrains.Annotations;
 using System.Text.Json.Serialization;
 
 namespace Dawdler.BilibiliUsers
 {
+	[UsedImplicitly]
 	public record BilibiliUser
 	{
 		public string Username { get; set; } = string.Empty;

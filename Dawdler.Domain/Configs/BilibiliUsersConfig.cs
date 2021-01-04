@@ -1,5 +1,6 @@
 using Dawdler.BilibiliUsers;
 using Dawdler.Utils;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Dawdler.Configs
 {
+	[UsedImplicitly]
 	public sealed class BilibiliUsersConfig : ConfigBase
 	{
 		public List<BilibiliUser> Users { get; } = new();
