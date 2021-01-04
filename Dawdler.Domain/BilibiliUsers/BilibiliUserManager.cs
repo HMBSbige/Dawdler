@@ -1,6 +1,8 @@
 using BilibiliApi.Clients;
+using BilibiliApi.Model.FansMedal;
 using BilibiliApi.Model.Login.Password.OAuth2;
 using BilibiliApi.Model.Manga.GetClockInInfo;
+using BilibiliLiveRecordDownLoader.Shared.Utils;
 using Dawdler.Configs;
 using Dawdler.Utils;
 using Microsoft.Extensions.Logging;
@@ -104,6 +106,29 @@ namespace Dawdler.BilibiliUsers
 		{
 			var client = CreateClient(User);
 			return await client.GetMangaClockInInfoAsync(User.AccessToken, token);
+		}
+
+		public async Task<List<FansMedalList>> GetLiveFansMedalListAsync(CancellationToken token)
+		{
+			var client = CreateClient(User);
+			return await client.GetLiveFansMedalListAsync(token);
+		}
+
+		public async Task SendDanmuAsync(long roomId, CancellationToken token)
+		{
+			var client = CreateClient(User);
+			await client.SendDanmuAsync(roomId, User.Csrf, rnd: Timestamp.GetTimestamp(DateTime.UtcNow).ToString(), token: token);
+		}
+
+		public async Task<long> GetRealRoomIdAsync(long roomId, CancellationToken token)
+		{
+			var client = CreateClient(User);
+			var message = await client.GetRoomInitAsync(roomId, token);
+			if (message?.data is null)
+			{
+				throw new HttpRequestException(@"获取真实房间号出错");
+			}
+			return message.data.room_id;
 		}
 
 		private static string ToCookie(IEnumerable<BilibiliCookie> cookies)
