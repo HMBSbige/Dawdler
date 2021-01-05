@@ -2,7 +2,9 @@
 Channel | Status
 -|-
 CI | [![CI](https://github.com/HMBSbige/Dawdler/workflows/CI/badge.svg)](https://github.com/HMBSbige/Dawdler/actions?query=workflow%3ACI)
-Docker | [![CI](https://github.com/HMBSbige/Dawdler/workflows/Docker/badge.svg)](https://github.com/HMBSbige/Dawdler/actions?query=workflow%3ADocker)
+CI | [![Docker](https://github.com/HMBSbige/Dawdler/workflows/Docker/badge.svg)](https://github.com/HMBSbige/Dawdler/actions?query=workflow%3ADocker)
+GitHub Packages | [![Docker](https://img.shields.io/badge/Docker-dawdler-blue)](https://github.com/users/HMBSbige/packages/container/package/dawdler)
+
 
 # 功能
 * Bilibili
