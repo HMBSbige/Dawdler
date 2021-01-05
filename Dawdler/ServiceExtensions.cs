@@ -14,7 +14,6 @@ namespace Dawdler
 			services.AddHttpClient(HttpClientName.Bilibili, client =>
 			{
 				client.DefaultRequestVersion = HttpVersion.Version20;
-				client.Timeout = TimeSpan.FromSeconds(10);
 				client.DefaultRequestHeaders.Accept.ParseAdd(@"application/json, text/javascript, */*; q=0.01");
 				client.DefaultRequestHeaders.Referrer = new Uri(@"https://live.bilibili.com/");
 				client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgents.Chrome);
