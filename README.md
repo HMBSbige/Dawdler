@@ -46,7 +46,6 @@ docker pull ghcr.io/hmbsbige/dawdler
 ### 运行
 ```
 docker run \
---rm \
 -it \
 --name=dawdler \
 -v $(pwd)/configs:/app/configs \
