@@ -16,6 +16,10 @@ Log.Logger = new LoggerConfiguration()
 		.MinimumLevel.Override(@"Microsoft", LogEventLevel.Information)
 		.MinimumLevel.Override(@"Volo.Abp", LogEventLevel.Warning)
 		.Enrich.FromLogContext()
+		.WriteTo.Async(c => c.File(Constants.LogFile,
+				outputTemplate: Constants.OutputTemplate,
+				rollingInterval: RollingInterval.Day,
+				fileSizeLimitBytes: Constants.MaxLogFileSize))
 		.WriteTo.Async(c => c.Console(outputTemplate: Constants.OutputTemplate))
 		.CreateLogger();
 try
