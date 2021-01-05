@@ -111,14 +111,24 @@ namespace Dawdler.Bilibili
 			try
 			{
 				await _manager.CheckLoginStatusAsync(token);
-				if (user.IsLogin is true)
+				if (user.IsLogin is not true)
+				{
+					_logger.LogInformation(@"[{0}] 登录中...", user.Username);
+					await _manager.LoginAsync(token);
+					_logger.LogInformation(@"[{0}] 登录成功", user.Username);
+					return;
+				}
+
+				var expire = await _manager.GetTokenExpireTimeAsync(token);
+				_logger.LogInformation(@"[{0}] Token 有效时间剩余 {1}", user.Username, expire);
+				if (expire > TimeSpan.FromDays(7))
 				{
 					return;
 				}
 
-				_logger.LogInformation(@"[{0}] 登录中...", user.Username);
-				await _manager.LoginAsync(token);
-				_logger.LogInformation(@"[{0}] 登录成功", user.Username);
+				_logger.LogInformation(@"[{0}] 刷新 Token...", user.Username);
+				await _manager.RefreshTokenAsync(token);
+				_logger.LogInformation(@"[{0}] 刷新 Token 成功", user.Username);
 			}
 			catch (TaskCanceledException)
 			{

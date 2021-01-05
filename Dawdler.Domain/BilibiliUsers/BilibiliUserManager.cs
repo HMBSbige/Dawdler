@@ -54,6 +54,36 @@ namespace Dawdler.BilibiliUsers
 			return new BilibiliApiClient(client);
 		}
 
+		private static string ToCookie(IEnumerable<BilibiliCookie> cookies)
+		{
+			var hashSet = new HashSet<string>();
+			foreach (var cookie in cookies)
+			{
+				hashSet.Add($@"{cookie.name}={cookie.value}");
+			}
+
+			return string.Join(';', hashSet);
+		}
+
+		private async ValueTask HandleAppLoginMessageAsync(AppLoginMessage message, CancellationToken token)
+		{
+			var tokenInfo = message.data!.token_info!;
+			User!.AccessToken = tokenInfo.access_token!;
+			User.RefreshToken = tokenInfo.refresh_token!;
+
+			var cookies = message.data.cookie_info!.cookies!;
+			User.Csrf = cookies.First(x => x.name == @"bili_jct").value!;
+			User.Cookie = ToCookie(cookies);
+			User.IsLogin = true;
+
+			await _usersConfig.SaveAsync(token);
+		}
+
+		private static bool IsToken([NotNullWhen(true)] string? token)
+		{
+			return !string.IsNullOrWhiteSpace(token) && token.Length == 32;
+		}
+
 		public async Task CheckLoginStatusAsync(CancellationToken token)
 		{
 			var client = CreateClient(User);
@@ -78,16 +108,20 @@ namespace Dawdler.BilibiliUsers
 			var client = CreateClient(User);
 			var message = await client.LoginAsync(User.Username, User.Password, token);
 
-			var tokenInfo = message.data!.token_info!;
-			User.AccessToken = tokenInfo.access_token!;
-			User.RefreshToken = tokenInfo.refresh_token!;
+			await HandleAppLoginMessageAsync(message, token);
+		}
 
-			var cookies = message.data.cookie_info!.cookies!;
-			User.Csrf = cookies.First(x => x.name == @"bili_jct").value!;
-			User.Cookie = ToCookie(cookies);
-			User.IsLogin = true;
+		public async Task RefreshTokenAsync(CancellationToken token)
+		{
+			if (!IsToken(User?.AccessToken) || !IsToken(User.RefreshToken))
+			{
+				throw new Exception(@"Token 格式错误");
+			}
 
-			await _usersConfig.SaveAsync(token);
+			var client = CreateClient(User);
+			var message = await client.RefreshTokenAsync(User.AccessToken, User.RefreshToken, token);
+
+			await HandleAppLoginMessageAsync(message, token);
 		}
 
 		public async Task<bool?> MangaClockInAsync(CancellationToken token)
@@ -131,14 +165,15 @@ namespace Dawdler.BilibiliUsers
 			return message.data.room_id;
 		}
 
-		private static string ToCookie(IEnumerable<BilibiliCookie> cookies)
+		public async Task<TimeSpan> GetTokenExpireTimeAsync(CancellationToken token)
 		{
-			var hashSet = new HashSet<string>();
-			foreach (var cookie in cookies)
+			var client = CreateClient(User);
+			var message = await client.GetTokenInfoAsync(User.AccessToken, token);
+			if (message.data is null)
 			{
-				hashSet.Add($@"{cookie.name}={cookie.value}");
+				throw new HttpRequestException(@"获取 Token 信息失败");
 			}
-			return string.Join(';', hashSet);
+			return TimeSpan.FromSeconds(message.data.expires_in);
 		}
 	}
 }
