@@ -1,10 +1,8 @@
 # Dawdler
-Channel | Status
--|-
-CI | [![CI](https://github.com/HMBSbige/Dawdler/workflows/CI/badge.svg)](https://github.com/HMBSbige/Dawdler/actions?query=workflow%3ACI)
-CI | [![Docker](https://github.com/HMBSbige/Dawdler/workflows/Docker/badge.svg)](https://github.com/HMBSbige/Dawdler/actions?query=workflow%3ADocker)
-GitHub Packages | [![Docker](https://img.shields.io/badge/Docker-dawdler-blue)](https://github.com/users/HMBSbige/packages/container/package/dawdler)
-
+[![CI](https://github.com/HMBSbige/Dawdler/workflows/CI/badge.svg)](https://github.com/HMBSbige/Dawdler/actions?query=workflow%3ACI)
+[![Docker](https://github.com/HMBSbige/Dawdler/workflows/Docker/badge.svg)](https://github.com/HMBSbige/Dawdler/actions?query=workflow%3ADocker)
+[![Docker](https://img.shields.io/badge/Docker-dawdler-blue?label=Docker&logo=docker)](https://github.com/users/HMBSbige/packages/container/package/dawdler)
+[![Github last commit date](https://img.shields.io/github/last-commit/HMBSbige/Dawdler.svg?label=Updated&logo=github)](https://github.com/HMBSbige/Dawdler/commits)
 
 # 功能
 * Bilibili
@@ -50,6 +48,7 @@ docker pull ghcr.io/hmbsbige/dawdler
 docker run \
 -it \
 --name=dawdler \
+-v /etc/localtime:/etc/localtime:ro \
 -v $(pwd)/configs:/app/configs \
 -v $(pwd)/Logs:/app/Logs \
 ghcr.io/hmbsbige/dawdler
