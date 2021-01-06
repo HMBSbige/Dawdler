@@ -11,7 +11,7 @@
     <PackageReference Include="BilibiliLiveRecordDownLoader.BilibiliApi" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" Version="16.8.55" />
-    <PackageReference Include="Volo.Abp.Core" Version="4.0.2" />
+    <PackageReference Include="Volo.Abp.Core" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>
