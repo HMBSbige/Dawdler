@@ -13,12 +13,15 @@ GitHub Packages | [![Docker](https://img.shields.io/badge/Docker-dawdler-blue)](
     * 每日分享
   * 直播
     * 每日自动发送弹幕获取 100 亲密度
+* 百度
+  * 每日贴吧签到
 
 # 配置
 所有的配置文件均在 `configs/` 目录下，运行前应手动配置好
 
 * `configs`
   * `bilibiliusers.json`
+  * `baiduusers.json`
 
 ## bilibiliusers.json
 B 站用户配置，支持多用户
@@ -38,6 +41,20 @@ B 站用户配置，支持多用户
   }
 ]
 ```
+
+## baiduusers.json
+百度用户配置，支持多用户
+
+BUSS 可以从 Cookie 中自行获取
+
+```json
+[
+  {
+    "BDUSS": "BDUSS"
+  }
+]
+```
+
 
 # Usage
 ## Docker
