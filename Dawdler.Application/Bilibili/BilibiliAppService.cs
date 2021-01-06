@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Threading;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,6 +43,12 @@ namespace Dawdler.Bilibili
 			{
 				while (!token.IsCancellationRequested)
 				{
+					if (!File.Exists(_usersConfig.FilePath))
+					{
+						_logger.LogInformation(@"不存在 {0}", _usersConfig.FilePath);
+						return;
+					}
+
 					await _usersConfig.LoadAsync(token);
 
 					var day = RunDailyTaskAsync(token);

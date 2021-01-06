@@ -19,7 +19,7 @@ namespace Dawdler.Configs
 		{
 		}
 
-		protected override string FilePath { get; } = ConfigPath.BilibiliUsers;
+		public override string FilePath { get; } = ConfigPath.BilibiliUsers;
 
 		protected override async ValueTask SaveToStreamAsync(Stream fs, JsonSerializerOptions options, CancellationToken token)
 		{

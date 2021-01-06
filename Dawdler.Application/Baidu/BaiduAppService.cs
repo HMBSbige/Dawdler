@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,6 +36,12 @@ namespace Dawdler.Baidu
 			{
 				while (!token.IsCancellationRequested)
 				{
+					if (!File.Exists(_usersConfig.FilePath))
+					{
+						_logger.LogInformation(@"不存在 {0}", _usersConfig.FilePath);
+						return;
+					}
+
 					await _usersConfig.LoadAsync(token);
 
 					var day = RunDailyTaskAsync(token);

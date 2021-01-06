@@ -16,7 +16,7 @@ namespace Dawdler.Configs
 		/// <summary>
 		/// 配置文件路径
 		/// </summary>
-		protected abstract string FilePath { get; }
+		public abstract string FilePath { get; }
 
 		private readonly AsyncReaderWriterLock _lock = new();
 		private static readonly JsonSerializerOptions JsonOptions = new()
