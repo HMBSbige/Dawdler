@@ -47,7 +47,7 @@ namespace Dawdler.BilibiliUsers
 			var client = _clientFactory.CreateClient(HttpClientName.Bilibili);
 			if (!string.IsNullOrWhiteSpace(user.Cookie))
 			{
-				_logger.LogDebug($@"Cookie: {user.Cookie}");
+				_logger.LogDebug(@"[{0}] Cookie: {1}", user.Username, user.Cookie);
 				client.DefaultRequestHeaders.Add(@"Cookie", user.Cookie);
 			}
 
@@ -93,7 +93,7 @@ namespace Dawdler.BilibiliUsers
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, @"检查登录状态失败");
+				_logger.LogError(ex, @"[{0}] 检查登录状态失败", User.Username);
 				User.IsLogin = null;
 			}
 		}

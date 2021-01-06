@@ -67,6 +67,7 @@ namespace Dawdler.Baidu
 				}
 
 				var countdown = await IAppService.GetNextDayCountdownAsync();
+				_logger.LogInformation($@"[Baidu] 每日任务完成，等待 {countdown} 后执行");
 				await Task.Delay(countdown, token);
 			}
 		}
