@@ -7,6 +7,11 @@ namespace Dawdler.Configs
 	public interface IConfig : ISingletonDependency
 	{
 		/// <summary>
+		/// 配置文件路径
+		/// </summary>
+		string FilePath { get; }
+
+		/// <summary>
 		/// 保存配置
 		/// </summary>
 		ValueTask SaveAsync(CancellationToken token);

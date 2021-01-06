@@ -18,6 +18,8 @@ namespace Dawdler.BilibiliDailyTasks
 
 		public override async ValueTask RunAsync(CancellationToken token)
 		{
+			token.ThrowIfCancellationRequested();
+
 			if (User is null)
 			{
 				throw new ArgumentNullException(nameof(User));
@@ -26,6 +28,8 @@ namespace Dawdler.BilibiliDailyTasks
 			var list = await Manager.GetLiveFansMedalListAsync(token);
 			foreach (var fansMedal in list)
 			{
+				token.ThrowIfCancellationRequested();
+
 				var header = $@"[{User.Username}] {fansMedal.uname}({fansMedal.roomid})";
 				try
 				{
@@ -46,7 +50,7 @@ namespace Dawdler.BilibiliDailyTasks
 					await Manager.SendDanmuAsync(realId, token);
 					await Task.Delay(TimeSpan.FromSeconds(1), token);
 				}
-				catch (Exception ex)
+				catch (Exception ex) when (ex is not TaskCanceledException)
 				{
 					Logger.LogError(ex, @"{0} 发送弹幕异常", header);
 				}

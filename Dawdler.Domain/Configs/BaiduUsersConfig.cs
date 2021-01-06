@@ -1,4 +1,4 @@
-using Dawdler.BilibiliUsers;
+using Dawdler.BaiduUsers;
 using Dawdler.Utils;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 namespace Dawdler.Configs
 {
 	[UsedImplicitly]
-	public sealed class BilibiliUsersConfig : ConfigBase
+	public class BaiduUsersConfig : ConfigBase
 	{
-		public List<BilibiliUser> Users { get; } = new();
+		public List<BaiduUser> Users { get; } = new();
 
-		public BilibiliUsersConfig(ILogger<BilibiliUsersConfig> logger) : base(logger)
+		public BaiduUsersConfig(ILogger<ConfigBase> logger) : base(logger)
 		{
 		}
 
-		public override string FilePath { get; } = ConfigPath.BilibiliUsers;
+		public override string FilePath { get; } = ConfigPath.BaiduUsers;
 
 		protected override async ValueTask SaveToStreamAsync(Stream fs, JsonSerializerOptions options, CancellationToken token)
 		{
@@ -28,7 +28,7 @@ namespace Dawdler.Configs
 
 		protected override async ValueTask LoadFromStreamAsync(Stream fs, CancellationToken token)
 		{
-			var users = await JsonSerializer.DeserializeAsync<List<BilibiliUser>>(fs, cancellationToken: token);
+			var users = await JsonSerializer.DeserializeAsync<List<BaiduUser>>(fs, cancellationToken: token);
 			if (users is not null)
 			{
 				Users.Clear();
