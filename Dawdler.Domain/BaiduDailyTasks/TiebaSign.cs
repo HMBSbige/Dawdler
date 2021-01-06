@@ -24,6 +24,8 @@ namespace Dawdler.BaiduDailyTasks
 
 		public override async ValueTask RunAsync(CancellationToken token)
 		{
+			token.ThrowIfCancellationRequested();
+
 			if (User is null)
 			{
 				throw new ArgumentNullException(nameof(User));
@@ -42,6 +44,8 @@ namespace Dawdler.BaiduDailyTasks
 			var list = message.forum_list.ToList();
 			for (var i = 0; i < RetryTimes; ++i)
 			{
+				token.ThrowIfCancellationRequested();
+
 				var listCount = list.Count;
 				list = await SignAsync(list, message, token);
 				success += listCount - list.Count;
@@ -74,7 +78,7 @@ namespace Dawdler.BaiduDailyTasks
 				{
 					Logger.LogInformation(@"[{0}] {1} 已签到", User.BDUSS, forum.name);
 				}
-				catch (Exception ex)
+				catch (Exception ex) when (ex is not TaskCanceledException)
 				{
 					failList.Add(forum);
 					Logger.LogError(ex, @"[{0}] {1} 签到失败", User.BDUSS, forum.name);

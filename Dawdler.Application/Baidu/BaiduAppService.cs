@@ -85,7 +85,7 @@ namespace Dawdler.Baidu
 				}
 				catch (TaskCanceledException)
 				{
-					_logger.LogError(@"[Baidu] 取消每日任务执行");
+					_logger.LogWarning(@"[Baidu] 取消每日任务执行");
 				}
 				catch (Exception ex)
 				{

@@ -19,6 +19,8 @@ namespace Dawdler.BilibiliDailyTasks
 
 		public override async ValueTask RunAsync(CancellationToken token)
 		{
+			token.ThrowIfCancellationRequested();
+
 			if (User is null)
 			{
 				throw new ArgumentNullException(nameof(User));

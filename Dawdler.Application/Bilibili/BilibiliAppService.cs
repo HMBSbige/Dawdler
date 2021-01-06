@@ -102,7 +102,7 @@ namespace Dawdler.Bilibili
 				}
 				catch (TaskCanceledException)
 				{
-					_logger.LogError(@"[Bilibili] 取消每日任务执行");
+					_logger.LogWarning(@"[Bilibili] 取消每日任务执行");
 				}
 				catch (Exception ex)
 				{
@@ -143,7 +143,7 @@ namespace Dawdler.Bilibili
 			}
 			catch (TaskCanceledException)
 			{
-				_logger.LogError(@"[Bilibili] [{0}] 取消登录", user.Username);
+				_logger.LogWarning(@"[Bilibili] [{0}] 取消登录", user.Username);
 			}
 			catch (Exception ex)
 			{
