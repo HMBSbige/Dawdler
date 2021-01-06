@@ -32,16 +32,16 @@ namespace Dawdler.Baidu
 
 		public async ValueTask StartAsync(CancellationToken token)
 		{
+			_logger.LogInformation(@"[Baidu] 启动...");
 			try
 			{
+				if (!File.Exists(_usersConfig.FilePath))
+				{
+					_logger.LogInformation(@"不存在 {0}", Path.GetFullPath(_usersConfig.FilePath));
+					return;
+				}
 				while (!token.IsCancellationRequested)
 				{
-					if (!File.Exists(_usersConfig.FilePath))
-					{
-						_logger.LogInformation(@"不存在 {0}", _usersConfig.FilePath);
-						return;
-					}
-
 					await _usersConfig.LoadAsync(token);
 
 					var day = RunDailyTaskAsync(token);
@@ -55,7 +55,7 @@ namespace Dawdler.Baidu
 			}
 			finally
 			{
-				_logger.LogInformation(@"[Baidu] 已停止任务");
+				_logger.LogInformation(@"[Baidu] 已停止");
 			}
 		}
 

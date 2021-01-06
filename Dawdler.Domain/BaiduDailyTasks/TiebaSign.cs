@@ -32,12 +32,12 @@ namespace Dawdler.BaiduDailyTasks
 			}
 
 			var message = await Manager.GetForumsAsync(token);
-			Logger.LogInformation(@"[{0}] 获取贴吧列表成功！", User.BDUSS);
-			Logger.LogInformation(@"[{0}] {1} 总共有 {2} 个贴吧", User.BDUSS, Timestamp.GetTime(message.time).ToLocalTime(), message.forum_list!.Length);
-			Logger.LogDebug(@"[{0}] TBS: {1}", User.BDUSS, message.anti!.tbs);
+			Logger.LogInformation(@"获取贴吧列表成功！");
+			Logger.LogInformation(@"{0} 总共有 {1} 个贴吧", Timestamp.GetTime(message.time).ToLocalTime(), message.forum_list!.Length);
+			Logger.LogDebug(@"TBS: {0}", message.anti!.tbs);
 			foreach (var forum in message.forum_list)
 			{
-				Logger.LogDebug(@"[{0}] {1}({2}):{3}级", User.BDUSS, forum.name, forum.id, forum.level_id);
+				Logger.LogDebug(@"{0}({1}):{2}级", forum.name, forum.id, forum.level_id);
 			}
 
 			var success = 0;
@@ -55,7 +55,7 @@ namespace Dawdler.BaiduDailyTasks
 				}
 			}
 
-			Logger.LogInformation(@"[{0}] 签到完成: {1}/{2}", User.BDUSS, success, message.forum_list.Length);
+			Logger.LogInformation(@"签到完成: {0}/{1}", success, message.forum_list.Length);
 		}
 
 		private async Task<List<Forum>> SignAsync(IEnumerable<Forum> list, ForumMessage message, CancellationToken token)
@@ -72,16 +72,20 @@ namespace Dawdler.BaiduDailyTasks
 				try
 				{
 					var res = await Manager.SignAsync(forum, message, token);
-					Logger.LogInformation($@"[{User.BDUSS}] {Timestamp.GetTime(res.sign_time).ToLocalTime()} {forum.name}:{res.level_name}:今日本吧第 {res.user_sign_rank} 个签到，经验 +{res.sign_bonus_point}，漏签 {res.miss_sign_num} 天，连续签到 {res.cont_sign_num} 天");
+					Logger.LogInformation($@"{Timestamp.GetTime(res.sign_time).ToLocalTime()} {forum.name}:{res.level_name}:今日本吧第 {res.user_sign_rank} 个签到，经验 +{res.sign_bonus_point}，漏签 {res.miss_sign_num} 天，连续签到 {res.cont_sign_num} 天");
 				}
 				catch (TiebaErrorException ex) when (ex.Error.error_code == @"160002")
 				{
-					Logger.LogInformation(@"[{0}] {1} 已签到", User.BDUSS, forum.name);
+					Logger.LogInformation(@"{0} 已签到", forum.name);
+				}
+				catch (TiebaErrorException ex) when (ex.Error.error_code == @"340008")
+				{
+					Logger.LogInformation(@"{0} 在黑名单中，不能操作", forum.name);
 				}
 				catch (Exception ex) when (ex is not TaskCanceledException)
 				{
 					failList.Add(forum);
-					Logger.LogError(ex, @"[{0}] {1} 签到失败", User.BDUSS, forum.name);
+					Logger.LogError(ex, @"{0} 签到失败", forum.name);
 				}
 			}
 

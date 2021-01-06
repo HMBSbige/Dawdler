@@ -50,7 +50,7 @@ namespace Dawdler.BaiduUsers
 
 		private async Task<string> PostAsync(string url, HttpContent content, CancellationToken token)
 		{
-			using var _ = _lock.EnterAsync(token);
+			using var _ = await _lock.EnterAsync(token);
 
 			var client = CreateClient();
 
@@ -116,7 +116,7 @@ namespace Dawdler.BaiduUsers
 			catch (JsonException)
 			{
 				var message = JsonSerializer.Deserialize<ForumMessage>(json);
-				if (message is null)
+				if (message?.forum_list is null)
 				{
 					throw new HttpRequestException(@"获取贴吧列表失败！");
 				}

@@ -39,16 +39,16 @@ namespace Dawdler.Bilibili
 
 		public async ValueTask StartAsync(CancellationToken token)
 		{
+			_logger.LogInformation(@"[Bilibili] 启动...");
 			try
 			{
+				if (!File.Exists(_usersConfig.FilePath))
+				{
+					_logger.LogInformation(@"不存在 {0}", Path.GetFullPath(_usersConfig.FilePath));
+					return;
+				}
 				while (!token.IsCancellationRequested)
 				{
-					if (!File.Exists(_usersConfig.FilePath))
-					{
-						_logger.LogInformation(@"不存在 {0}", _usersConfig.FilePath);
-						return;
-					}
-
 					await _usersConfig.LoadAsync(token);
 
 					var day = RunDailyTaskAsync(token);
@@ -62,7 +62,7 @@ namespace Dawdler.Bilibili
 			}
 			finally
 			{
-				_logger.LogInformation(@"[Bilibili] 已停止任务");
+				_logger.LogInformation(@"[Bilibili] 已停止");
 			}
 		}
 
