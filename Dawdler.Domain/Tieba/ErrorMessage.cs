@@ -3,14 +3,17 @@ using JetBrains.Annotations;
 namespace Dawdler.Tieba
 {
 	[UsedImplicitly]
-	public class ForumMessage
+	public class ErrorMessage
 	{
 		/// <summary>
-		/// 贴吧列表
+		/// 错误代码
 		/// </summary>
-		public Forum[]? forum_list { get; set; }
+		public string? error_code { get; set; }
 
-		public Anti? anti { get; set; }
+		/// <summary>
+		/// 错误信息
+		/// </summary>
+		public string? error_msg { get; set; }
 
 		/// <summary>
 		/// 当前时间戳

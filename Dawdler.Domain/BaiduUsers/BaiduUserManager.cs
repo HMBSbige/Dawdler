@@ -1,9 +1,13 @@
 using BilibiliLiveRecordDownLoader.Shared.Utils;
+using Dawdler.Tieba;
 using Dawdler.Utils;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Threading;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
@@ -36,6 +40,14 @@ namespace Dawdler.BaiduUsers
 			return _clientFactory.CreateClient(HttpClientName.Baidu);
 		}
 
+		private static void CheckUser([NotNull] BaiduUser? user)
+		{
+			if (user is null)
+			{
+				throw new ArgumentNullException(nameof(user));
+			}
+		}
+
 		private async Task<string> PostAsync(string url, HttpContent content, CancellationToken token)
 		{
 			using var _ = _lock.EnterAsync(token);
@@ -49,12 +61,14 @@ namespace Dawdler.BaiduUsers
 			return resultContent;
 		}
 
-		public async Task<string> SignAsync(string BDUSS, long fid, string kw, string tbs, CancellationToken token)
+		private async Task<string> GetSignMessageAsync(long fid, string kw, string tbs, CancellationToken token)
 		{
-			var sign = Md5.ComputeHash($@"BDUSS={BDUSS}fid={fid}kw={kw}tbs={tbs}tiebaclient!!!").ToUpper();
+			CheckUser(User);
+
+			var sign = Md5.ComputeHash($@"BDUSS={User.BDUSS}fid={fid}kw={kw}tbs={tbs}tiebaclient!!!").ToUpper();
 			var pair = new Dictionary<string, string>
 			{
-				{@"BDUSS", BDUSS},
+				{@"BDUSS", User.BDUSS},
 				{@"fid", fid.ToString()},
 				{@"kw", kw},
 				{@"tbs", tbs},
@@ -65,18 +79,67 @@ namespace Dawdler.BaiduUsers
 			return await PostAsync(SignUrl, content, token);
 		}
 
-		public async Task<string> GetForumAsync(string BDUSS, CancellationToken token)
+		private async Task<string> GetForumsMessageAsync(CancellationToken token)
 		{
-			var sign = Md5.ComputeHash($@"BDUSS={BDUSS}tiebaclient!!!").ToUpper();
+			CheckUser(User);
+
+			var sign = Md5.ComputeHash($@"BDUSS={User.BDUSS}tiebaclient!!!").ToUpper();
 
 			var pair = new Dictionary<string, string>
 			{
-				{@"BDUSS", BDUSS},
+				{@"BDUSS", User.BDUSS},
 				{@"sign", sign}
 			};
 			using var content = new FormUrlEncodedContent(pair.Cast());
 
 			return await PostAsync(TiebaListUrl, content, token);
+		}
+
+		private static Exception HandleError(string json)
+		{
+			var error = JsonSerializer.Deserialize<ErrorMessage>(json);
+			if (error is null || error.error_code == @"0")
+			{
+				return new JsonException();
+			}
+
+			return new TiebaErrorException(error);
+		}
+
+		public async Task<ForumMessage> GetForumsAsync(CancellationToken token)
+		{
+			var json = await GetForumsMessageAsync(token);
+			try
+			{
+				throw HandleError(json);
+			}
+			catch (JsonException)
+			{
+				var message = JsonSerializer.Deserialize<ForumMessage>(json);
+				if (message is null)
+				{
+					throw new HttpRequestException(@"获取贴吧列表失败！");
+				}
+				return message;
+			}
+		}
+
+		public async Task<SignInfo> SignAsync(Forum forum, ForumMessage forumMessage, CancellationToken token)
+		{
+			var json = await GetSignMessageAsync(forum.id, forum.name!, forumMessage.anti!.tbs!, token);
+			try
+			{
+				throw HandleError(json);
+			}
+			catch (JsonException)
+			{
+				var message = JsonSerializer.Deserialize<SignInfo>(json);
+				if (message is null)
+				{
+					throw new HttpRequestException(@"获取签到信息失败！");
+				}
+				return message;
+			}
 		}
 	}
 }
