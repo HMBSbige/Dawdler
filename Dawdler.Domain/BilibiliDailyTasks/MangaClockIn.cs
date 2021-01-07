@@ -36,7 +36,7 @@ namespace Dawdler.BilibiliDailyTasks
 			}
 			catch (HttpRequestException ex) when (ex.Message.Contains(@"uid must > 0"))
 			{
-				throw new BilibiliNoLoginException();
+				throw new BilibiliNoLoginException(ex.Message);
 			}
 			Logger.LogInformation(@"[{0}] 每日漫画签到成功", User.Username);
 

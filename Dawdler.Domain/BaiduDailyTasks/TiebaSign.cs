@@ -26,11 +26,6 @@ namespace Dawdler.BaiduDailyTasks
 		{
 			token.ThrowIfCancellationRequested();
 
-			if (User is null)
-			{
-				throw new ArgumentNullException(nameof(User));
-			}
-
 			var message = await Manager.GetForumsAsync(token);
 			Logger.LogInformation(@"获取贴吧列表成功！");
 			Logger.LogInformation(@"{0} 总共有 {1} 个贴吧", Timestamp.GetTime(message.time).ToLocalTime(), message.forum_list!.Length);
@@ -53,6 +48,8 @@ namespace Dawdler.BaiduDailyTasks
 				{
 					break;
 				}
+
+				await Task.Delay(TimeSpan.FromSeconds(1), token);
 			}
 
 			Logger.LogInformation(@"签到完成: {0}/{1}", success, message.forum_list.Length);
@@ -60,11 +57,6 @@ namespace Dawdler.BaiduDailyTasks
 
 		private async Task<List<Forum>> SignAsync(IEnumerable<Forum> list, ForumMessage message, CancellationToken token)
 		{
-			if (User is null)
-			{
-				throw new ArgumentNullException(nameof(User));
-			}
-
 			var failList = new List<Forum>();
 			foreach (var forum in list)
 			{

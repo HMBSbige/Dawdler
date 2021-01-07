@@ -103,9 +103,9 @@ namespace Dawdler.Bilibili
 				{
 					await task.RunAsync(token);
 				}
-				catch (BilibiliNoLoginException)
+				catch (BilibiliNoLoginException ex)
 				{
-					_logger.LogError(@"[Bilibili] [{0}] 账号未登录", user.Username);
+					_logger.LogError(@"[Bilibili] [{0}] {1}", user.Username, ex.Message);
 				}
 				catch (TaskCanceledException)
 				{
