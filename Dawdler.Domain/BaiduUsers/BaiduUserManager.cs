@@ -133,12 +133,12 @@ namespace Dawdler.BaiduUsers
 			}
 			catch (JsonException)
 			{
-				var message = JsonSerializer.Deserialize<SignInfo>(json);
-				if (message is null)
+				var message = JsonSerializer.Deserialize<SignMessage>(json);
+				if (message?.user_info is null)
 				{
 					throw new HttpRequestException(@"获取签到信息失败！");
 				}
-				return message;
+				return message.user_info;
 			}
 		}
 	}
