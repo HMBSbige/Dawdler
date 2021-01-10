@@ -1,6 +1,5 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
 FROM mcr.microsoft.com/dotnet/runtime-deps:5.0-alpine3.12-amd64 AS base
+LABEL maintainer="HMBSbige"
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine3.12-amd64 AS build
@@ -20,4 +19,6 @@ RUN dotnet publish "Dawdler.csproj" -p:PublishSingleFile=true -r linux-musl-x64 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+VOLUME ["/app/configs", "/app/Logs"]
+HEALTHCHECK CMD ["pidof", "Dawdler"]
 ENTRYPOINT ["./Dawdler"]
