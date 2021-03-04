@@ -18,7 +18,7 @@ namespace Dawdler.Configs
 		/// </summary>
 		public abstract string FilePath { get; }
 
-		private readonly AsyncReaderWriterLock _lock = new();
+		private readonly AsyncReaderWriterLock _lock = new(null);
 		private static readonly JsonSerializerOptions JsonOptions = new()
 		{
 			WriteIndented = true,
