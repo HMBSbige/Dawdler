@@ -137,9 +137,10 @@ namespace Dawdler.Bilibili
 					return;
 				}
 
-				var expire = await _manager.GetTokenExpireTimeAsync(token);
-				_logger.LogInformation(@"[Bilibili] [{0}] Token 有效时间剩余 {1}", user.Username, expire);
-				if (expire > TimeSpan.FromDays(7))
+				var tokenInfoData = await _manager.GetTokenInfoDataAsync(token);
+				var expire = TimeSpan.FromSeconds(tokenInfoData.expires_in);
+				_logger.LogInformation(@"[Bilibili] [{0}] Token 有效时间剩余 {1}, refresh: {2}", user.Username, expire, tokenInfoData.refresh);
+				if (!tokenInfoData.refresh && expire > TimeSpan.FromDays(14))
 				{
 					return;
 				}

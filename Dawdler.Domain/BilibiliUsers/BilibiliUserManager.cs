@@ -1,5 +1,6 @@
 using BilibiliApi.Clients;
 using BilibiliApi.Model.FansMedal;
+using BilibiliApi.Model.Login.Password.GetTokenInfo;
 using BilibiliApi.Model.Login.Password.OAuth2;
 using BilibiliApi.Model.Manga.GetClockInInfo;
 using BilibiliLiveRecordDownLoader.Shared.Utils;
@@ -165,7 +166,7 @@ namespace Dawdler.BilibiliUsers
 			return message.data.room_id;
 		}
 
-		public async Task<TimeSpan> GetTokenExpireTimeAsync(CancellationToken token)
+		public async Task<TokenInfoData> GetTokenInfoDataAsync(CancellationToken token)
 		{
 			var client = CreateClient(User);
 			var message = await client.GetTokenInfoAsync(User.AccessToken, token);
@@ -173,7 +174,7 @@ namespace Dawdler.BilibiliUsers
 			{
 				throw new HttpRequestException(@"获取 Token 信息失败");
 			}
-			return TimeSpan.FromSeconds(message.data.expires_in);
+			return message.data;
 		}
 	}
 }
