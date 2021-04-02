@@ -18,6 +18,11 @@ namespace Dawdler.Configs
 		/// </summary>
 		public abstract string FilePath { get; }
 
+		/// <summary>
+		/// 备份配置文件路径
+		/// </summary>
+		public abstract string BackupFilePath { get; }
+
 		private readonly AsyncReaderWriterLock _lock = new(null);
 		private static readonly JsonSerializerOptions JsonOptions = new()
 		{
@@ -34,12 +39,17 @@ namespace Dawdler.Configs
 		protected abstract ValueTask SaveToStreamAsync(Stream fs, JsonSerializerOptions options, CancellationToken token);
 		protected abstract ValueTask LoadFromStreamAsync(Stream fs, CancellationToken token);
 
-		private void EnsureDir()
+		private async ValueTask EnsureConfigFileExistsAsync()
 		{
 			var dir = Path.GetDirectoryName(FilePath);
 			if (!Directory.Exists(dir) && dir is not null)
 			{
 				Directory.CreateDirectory(dir);
+			}
+
+			if (!File.Exists(FilePath))
+			{
+				await File.Create(FilePath).DisposeAsync();
 			}
 		}
 
@@ -49,10 +59,16 @@ namespace Dawdler.Configs
 			{
 				await using var _ = await _lock.WriteLockAsync(token);
 
-				EnsureDir();
-				await using var fs = new FileStream(FilePath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
+				var tempFile = Path.ChangeExtension(@"TMP" + Path.GetRandomFileName(), Path.GetExtension(FilePath));
 
-				await SaveToStreamAsync(fs, JsonOptions, token);
+				await using (var fs = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true))
+				{
+					await SaveToStreamAsync(fs, JsonOptions, token);
+				}
+
+				await EnsureConfigFileExistsAsync();
+
+				File.Replace(tempFile, FilePath, BackupFilePath);
 			}
 			catch (Exception ex)
 			{
@@ -66,13 +82,35 @@ namespace Dawdler.Configs
 			{
 				await using var _ = await _lock.ReadLockAsync(token);
 
-				await using var fs = File.OpenRead(FilePath);
+				if (await LoadAsync(FilePath, token))
+				{
+					return;
+				}
 
-				await LoadFromStreamAsync(fs, token);
+				_logger.LogInformation($@"尝试加载备份文件 {BackupFilePath}");
+				await LoadAsync(BackupFilePath, token);
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, $@"加载 {FilePath} 错误！");
+			}
+		}
+
+		private async ValueTask<bool> LoadAsync(string filename, CancellationToken token)
+		{
+			try
+			{
+				await using var fs = File.OpenRead(filename);
+
+				await LoadFromStreamAsync(fs, token);
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, $@"加载 {filename} 错误！");
+
+				return false;
 			}
 		}
 	}

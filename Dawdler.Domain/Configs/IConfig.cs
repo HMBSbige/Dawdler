@@ -12,6 +12,11 @@ namespace Dawdler.Configs
 		string FilePath { get; }
 
 		/// <summary>
+		/// 备份配置文件路径
+		/// </summary>
+		string BackupFilePath { get; }
+
+		/// <summary>
 		/// 保存配置
 		/// </summary>
 		ValueTask SaveAsync(CancellationToken token);

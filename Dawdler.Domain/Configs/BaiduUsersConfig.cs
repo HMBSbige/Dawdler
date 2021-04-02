@@ -19,7 +19,9 @@ namespace Dawdler.Configs
 		{
 		}
 
-		public override string FilePath { get; } = ConfigPath.BaiduUsers;
+		public override string FilePath => ConfigPath.BaiduUsers;
+
+		public override string BackupFilePath => ConfigPath.BaiduUsersBackup;
 
 		protected override async ValueTask SaveToStreamAsync(Stream fs, JsonSerializerOptions options, CancellationToken token)
 		{
