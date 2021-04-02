@@ -59,16 +59,14 @@ namespace Dawdler.Configs
 			{
 				await using var _ = await _lock.WriteLockAsync(token);
 
-				var tempFile = Path.ChangeExtension(@"TMP" + Path.GetRandomFileName(), Path.GetExtension(FilePath));
+				await EnsureConfigFileExistsAsync();
 
-				await using (var fs = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true))
+				await using (var fs = new FileStream(BackupFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true))
 				{
 					await SaveToStreamAsync(fs, JsonOptions, token);
 				}
 
-				await EnsureConfigFileExistsAsync();
-
-				File.Replace(tempFile, FilePath, BackupFilePath);
+				File.Replace(BackupFilePath, FilePath, null);
 			}
 			catch (Exception ex)
 			{
