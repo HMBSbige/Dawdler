@@ -1,6 +1,6 @@
 # Dawdler
-[![CI](https://github.com/HMBSbige/Dawdler/workflows/CI/badge.svg)](https://github.com/HMBSbige/Dawdler/actions?query=workflow%3ACI)
-[![Docker](https://github.com/HMBSbige/Dawdler/workflows/Docker/badge.svg)](https://github.com/HMBSbige/Dawdler/actions?query=workflow%3ADocker)
+[![CI](https://github.com/HMBSbige/Dawdler/actions/workflows/CI.yml/badge.svg)](https://github.com/HMBSbige/Dawdler/actions/workflows/CI.yml)
+[![Docker](https://github.com/HMBSbige/Dawdler/actions/workflows/Docker.yml/badge.svg)](https://github.com/HMBSbige/Dawdler/actions/workflows/Docker.yml)
 [![Docker](https://img.shields.io/badge/Docker-dawdler-blue?label=Docker&logo=docker)](https://github.com/users/HMBSbige/packages/container/package/dawdler)
 [![Github last commit date](https://img.shields.io/github/last-commit/HMBSbige/Dawdler.svg?label=Updated&logo=github)](https://github.com/HMBSbige/Dawdler/commits)
 
@@ -72,4 +72,4 @@ ghcr.io/hmbsbige/dawdler
 ```
 
 ## 其他平台
-在 [Actions](https://github.com/HMBSbige/Dawdler/actions?query=workflow%3ACI+branch%3Amaster+is%3Asuccess) 中选择最新的 Commit 下载所需平台的 Artifact
+在 [Actions](https://github.com/HMBSbige/Dawdler/actions/workflows/CI.yml?query=workflow%3ACI+branch%3Amaster+is%3Asuccess) 中选择最新的 Commit 下载所需平台的 Artifact
