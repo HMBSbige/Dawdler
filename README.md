@@ -1,7 +1,7 @@
 # Dawdler
 [![CI](https://github.com/HMBSbige/Dawdler/actions/workflows/CI.yml/badge.svg)](https://github.com/HMBSbige/Dawdler/actions/workflows/CI.yml)
 [![Docker](https://github.com/HMBSbige/Dawdler/actions/workflows/Docker.yml/badge.svg)](https://github.com/HMBSbige/Dawdler/actions/workflows/Docker.yml)
-[![Docker](https://img.shields.io/badge/Docker-dawdler-blue?label=Docker&logo=docker)](https://github.com/users/HMBSbige/packages/container/package/dawdler)
+[![Docker](https://img.shields.io/badge/dawdler-blue?label=Docker&logo=docker)](https://github.com/users/HMBSbige/packages/container/package/dawdler)
 [![Github last commit date](https://img.shields.io/github/last-commit/HMBSbige/Dawdler.svg?label=Updated&logo=github)](https://github.com/HMBSbige/Dawdler/commits)
 
 # 功能
