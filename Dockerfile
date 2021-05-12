@@ -1,9 +1,25 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine-amd64 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build
+ARG TARGETARCH
+ARG TARGETOS
 COPY ./ /src/
 WORKDIR /src/Dawdler/
-RUN dotnet publish "Dawdler.csproj" -p:PublishSingleFile=true -r linux-musl-x64 --self-contained true -p:PublishTrimmed=True -p:TrimMode=Link -c Release -o /app/publish
+RUN dotnet --info && \
+    case "$TARGETOS" in \
+      "linux") ;; \
+      *) echo "ERROR: Unsupported OS: ${TARGETOS}"; exit 1 ;; \
+    esac && \
+    case "$TARGETARCH" in \
+      "amd64") dotnet_rid="linux-musl-x64" ;; \
+      *) echo "ERROR: Unsupported CPU architecture: ${TARGETARCH}"; exit 1 ;; \
+    esac && \
+    dotnet publish "Dawdler.csproj" \
+    -r "$dotnet_rid" \
+    -p:PublishSingleFile=true --self-contained true \
+    -p:PublishTrimmed=True -p:TrimMode=Link \
+    -c Release \
+    -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/runtime-deps:5.0-alpine-amd64
+FROM mcr.microsoft.com/dotnet/runtime-deps:5.0-alpine
 LABEL maintainer="HMBSbige"
 WORKDIR /app
 COPY --from=build /app/publish .

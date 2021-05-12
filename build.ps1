@@ -1,8 +1,8 @@
 param([string]$rid = 'linux-musl-x64')
 $ErrorActionPreference = 'Stop'
 
-Write-Host 'dotnet SDK version'
-dotnet --version
+Write-Host 'dotnet SDK info'
+dotnet --info
 
 $net_tfm = 'net5.0'
 $configuration = 'Release'
