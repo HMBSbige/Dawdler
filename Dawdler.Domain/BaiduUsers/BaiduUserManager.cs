@@ -65,7 +65,7 @@ namespace Dawdler.BaiduUsers
 		{
 			CheckUser(User);
 
-			var sign = Md5.ComputeHash($@"BDUSS={User.BDUSS}fid={fid}kw={kw}tbs={tbs}tiebaclient!!!").ToUpper();
+			var sign = Md5.ToHexString($@"BDUSS={User.BDUSS}fid={fid}kw={kw}tbs={tbs}tiebaclient!!!").ToUpper();
 			var pair = new Dictionary<string, string>
 			{
 				{@"BDUSS", User.BDUSS},
@@ -83,7 +83,7 @@ namespace Dawdler.BaiduUsers
 		{
 			CheckUser(User);
 
-			var sign = Md5.ComputeHash($@"BDUSS={User.BDUSS}tiebaclient!!!").ToUpper();
+			var sign = Md5.ToHexString($@"BDUSS={User.BDUSS}tiebaclient!!!").ToUpper();
 
 			var pair = new Dictionary<string, string>
 			{

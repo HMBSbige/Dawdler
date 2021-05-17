@@ -12,7 +12,7 @@ namespace Dawdler
 
 		protected static async ValueTask<TimeSpan> GetNextDayCountdownAsync()
 		{
-			var now = await Ntp.GetCurrentTime();
+			var now = await Ntp.GetCurrentTimeAsync();
 
 			now = now.AddHours(8);
 			var nextDay = now.Date.AddDays(1);

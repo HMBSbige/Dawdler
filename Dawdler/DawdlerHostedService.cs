@@ -1,6 +1,6 @@
-using BilibiliLiveRecordDownLoader.Shared.Utils;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.Threading;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +27,7 @@ namespace Dawdler
 
 			foreach (var service in _services)
 			{
-				service.StartAsync(_cts.Token).NoWarning();
+				service.StartAsync(_cts.Token).Forget();
 			}
 
 			return Task.CompletedTask;
