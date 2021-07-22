@@ -1,6 +1,6 @@
-using CryptoBase;
 using CryptoBase.Abstractions.Digests;
-using CryptoBase.Digests.MD5;
+using CryptoBase.DataFormatExtensions;
+using CryptoBase.Digests;
 using System;
 using System.Buffers;
 using System.Text;
@@ -17,8 +17,8 @@ namespace Dawdler.Utils
 				var length = Encoding.UTF8.GetBytes(str, buffer);
 
 				Span<byte> hash = stackalloc byte[HashConstants.Md5Length];
-
-				MD5Utils.Default(buffer.AsSpan(0, length), hash);
+				using var md5 = DigestUtils.Create(DigestType.Md5);
+				md5.UpdateFinal(buffer.AsSpan(0, length), hash);
 
 				return hash.ToHex();
 			}
