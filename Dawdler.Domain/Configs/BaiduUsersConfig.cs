@@ -1,5 +1,4 @@
-using Dawdler.BaiduUsers;
-using Dawdler.Utils;
+using Dawdler.Baidu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;

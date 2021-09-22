@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 using UsedImplicitly = JetBrains.Annotations.UsedImplicitlyAttribute;
 
-namespace Dawdler.BaiduUsers
+namespace Dawdler.Baidu
 {
 	[UsedImplicitly]
 	public class BaiduUserManager : ITransientDependency

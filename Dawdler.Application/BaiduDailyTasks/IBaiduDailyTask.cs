@@ -1,4 +1,4 @@
-using Dawdler.BaiduUsers;
+using Dawdler.Baidu;
 
 namespace Dawdler.BaiduDailyTasks
 {

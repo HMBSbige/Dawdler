@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 using UsedImplicitly = JetBrains.Annotations.UsedImplicitlyAttribute;
 
-namespace Dawdler.BilibiliUsers
+namespace Dawdler.Bilibili
 {
 	[UsedImplicitly]
 	public class BilibiliUserManager : ITransientDependency

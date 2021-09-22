@@ -1,6 +1,6 @@
 using System;
 
-namespace Dawdler.BilibiliUsers
+namespace Dawdler.Bilibili
 {
 	public class BilibiliNoLoginException : Exception
 	{

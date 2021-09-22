@@ -1,5 +1,5 @@
 using BilibiliLiveRecordDownLoader.Shared.Utils;
-using Dawdler.BaiduUsers;
+using Dawdler.Baidu;
 using Dawdler.Tieba;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;

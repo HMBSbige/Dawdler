@@ -43,8 +43,5 @@ static IHostBuilder CreateHostBuilder(string[] args)
 	return Host.CreateDefaultBuilder(args)
 			.UseAutofac()
 			.UseSerilog()
-			.ConfigureServices((_, services) =>
-			{
-				services.AddApplication<DawdlerModule>();
-			});
+			.ConfigureServices((_, services) => services.AddApplication<DawdlerModule>());
 }

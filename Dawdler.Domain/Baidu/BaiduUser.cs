@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace Dawdler.BaiduUsers
+namespace Dawdler.Baidu
 {
 	[UsedImplicitly]
 	public record BaiduUser

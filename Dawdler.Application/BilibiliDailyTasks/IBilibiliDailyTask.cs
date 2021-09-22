@@ -1,4 +1,4 @@
-using Dawdler.BilibiliUsers;
+using Dawdler.Bilibili;
 
 namespace Dawdler.BilibiliDailyTasks
 {

@@ -1,5 +1,4 @@
-using Dawdler.BilibiliUsers;
-using Dawdler.Utils;
+using Dawdler.Bilibili;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;

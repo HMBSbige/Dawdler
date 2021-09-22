@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using System.Text.Json.Serialization;
 
-namespace Dawdler.BilibiliUsers
+namespace Dawdler.Bilibili
 {
 	[UsedImplicitly]
 	public record BilibiliUser

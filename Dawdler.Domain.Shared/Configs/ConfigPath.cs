@@ -1,4 +1,4 @@
-namespace Dawdler.Utils
+namespace Dawdler.Configs
 {
 	public static class ConfigPath
 	{

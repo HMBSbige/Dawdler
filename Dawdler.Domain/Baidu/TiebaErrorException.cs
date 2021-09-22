@@ -2,7 +2,7 @@ using BilibiliLiveRecordDownLoader.Shared.Utils;
 using Dawdler.Tieba;
 using System;
 
-namespace Dawdler.BaiduUsers
+namespace Dawdler.Baidu
 {
 	public class TiebaErrorException : Exception
 	{

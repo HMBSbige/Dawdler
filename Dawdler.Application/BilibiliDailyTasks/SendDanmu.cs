@@ -1,5 +1,5 @@
 using BilibiliApi.Model.FansMedal;
-using Dawdler.BilibiliUsers;
+using Dawdler.Bilibili;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using System;

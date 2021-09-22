@@ -1,18 +1,17 @@
-using Dawdler.BaiduUsers;
+using Dawdler.Bilibili;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Dawdler.BaiduDailyTasks
+namespace Dawdler.BilibiliDailyTasks
 {
-	public abstract class BaiduDailyTask : IBaiduDailyTask
+	public abstract class BilibiliDailyTask : IBilibiliDailyTask
 	{
 		protected readonly ILogger Logger;
-		protected readonly BaiduUserManager Manager;
+		protected readonly BilibiliUserManager Manager;
 
-		private BaiduUser? _user;
-
-		public BaiduUser? User
+		private BilibiliUser? _user;
+		public BilibiliUser? User
 		{
 			get => _user;
 			set
@@ -22,9 +21,9 @@ namespace Dawdler.BaiduDailyTasks
 			}
 		}
 
-		protected BaiduDailyTask(
-			ILogger<BaiduDailyTask> logger,
-			BaiduUserManager manager)
+		protected BilibiliDailyTask(
+			ILogger<BilibiliDailyTask> logger,
+			BilibiliUserManager manager)
 		{
 			Logger = logger;
 			Manager = manager;

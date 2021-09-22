@@ -1,5 +1,4 @@
 using Dawdler.BaiduDailyTasks;
-using Dawdler.BaiduUsers;
 using Dawdler.Configs;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
