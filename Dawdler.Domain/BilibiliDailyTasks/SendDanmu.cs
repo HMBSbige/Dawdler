@@ -64,9 +64,9 @@ namespace Dawdler.BilibiliDailyTasks
 				var header = $@"[{User.Username}] {fansMedal.uname}({fansMedal.roomid})";
 				try
 				{
-					if (fansMedal.medal_level > 20)
+					if (fansMedal.medal_level >= 20)
 					{
-						Logger.LogInformation(@"{0} 徽章等级大于 20，跳过", header);
+						Logger.LogInformation(@"{0} 徽章等级 ≥ 20，跳过", header);
 						continue;
 					}
 
