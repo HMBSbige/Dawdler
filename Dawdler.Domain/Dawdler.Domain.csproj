@@ -1,11 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
-    <RootNamespace>Dawdler</RootNamespace>
-  </PropertyGroup>
+  <Import Project="..\common.props" />
 
   <ItemGroup>
     <PackageReference Include="BilibiliLiveRecordDownLoader.BilibiliApi" Version="1.5.0" />
