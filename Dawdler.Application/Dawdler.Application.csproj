@@ -3,7 +3,7 @@
   <Import Project="..\common.props" />
 
   <ItemGroup>
-    <PackageReference Include="BilibiliLiveRecordDownLoader.BilibiliApi" Version="1.5.0" />
+    <PackageReference Include="BilibiliLiveRecordDownLoader.BilibiliApi" Version="1.6.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
   </ItemGroup>
 
