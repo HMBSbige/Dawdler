@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 ARG TARGETARCH
 ARG TARGETOS
 COPY ./ /src/
@@ -15,11 +15,11 @@ RUN dotnet --info && \
     dotnet publish "Dawdler.csproj" \
     -r "$dotnet_rid" \
     -p:PublishSingleFile=true --self-contained true \
-    -p:PublishTrimmed=True -p:TrimMode=Link \
+    -p:PublishTrimmed=True \
     -c Release \
     -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/runtime-deps:5.0-alpine
+FROM mcr.microsoft.com/dotnet/runtime-deps:6.0-alpine
 LABEL maintainer="HMBSbige"
 WORKDIR /app
 COPY --from=build /app/publish .
