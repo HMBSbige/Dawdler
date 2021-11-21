@@ -16,7 +16,7 @@ namespace Dawdler
 				client.DefaultRequestVersion = HttpVersion.Version20;
 				client.DefaultRequestHeaders.Accept.ParseAdd(@"application/json, text/javascript, */*; q=0.01");
 				client.DefaultRequestHeaders.Referrer = new Uri(@"https://live.bilibili.com/");
-				client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgents.Chrome);
+				client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgents.BilibiliManga);
 			}).ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler { UseCookies = false });
 
 			services.AddHttpClient(HttpClientName.Baidu, client =>

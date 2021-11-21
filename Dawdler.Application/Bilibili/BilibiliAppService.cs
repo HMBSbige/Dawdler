@@ -55,7 +55,7 @@ namespace Dawdler.Bilibili
 					await day;
 
 					var wait = TimeSpan.FromMinutes(1);
-					_logger.LogInformation($@"[Bilibili] 等待 {wait} 后再次执行");
+					_logger.LogInformation(@"[Bilibili] 等待 {wait} 后再次执行", wait);
 					await Task.Delay(wait, token);
 				}
 			}
@@ -86,7 +86,7 @@ namespace Dawdler.Bilibili
 				}
 
 				var countdown = await IAppService.GetNextDayCountdownAsync();
-				_logger.LogInformation($@"[Bilibili] 每日任务完成，等待 {countdown} 后执行");
+				_logger.LogInformation(@"[Bilibili] 每日任务完成，等待 {countdown} 后执行", countdown);
 				await Task.Delay(countdown, token);
 			}
 		}
