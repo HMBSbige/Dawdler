@@ -21,6 +21,7 @@ jobs:
           - linux-arm64
           - linux-musl-arm64
           - osx-x64
+          - osx-arm64
     env:
       NET_TFM: net6.0
       Configuration: Release
