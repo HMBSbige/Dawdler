@@ -1,9 +1,8 @@
 using Dawdler.Bilibili;
 
-namespace Dawdler.BilibiliDailyTasks
+namespace Dawdler.BilibiliDailyTasks;
+
+public interface IBilibiliDailyTask : IDailyTask
 {
-	public interface IBilibiliDailyTask : IDailyTask
-	{
-		BilibiliUser? User { get; set; }
-	}
+	BilibiliUser? User { get; set; }
 }

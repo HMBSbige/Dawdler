@@ -1,44 +1,40 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Threading;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Dawdler
+namespace Dawdler;
+
+public class DawdlerHostedService : IHostedService
 {
-	public class DawdlerHostedService : IHostedService
+	private readonly ILogger _logger;
+	private readonly IEnumerable<IAppService> _services;
+	private readonly CancellationTokenSource _cts = new();
+
+	public DawdlerHostedService(
+		ILogger<DawdlerHostedService> logger,
+		IEnumerable<IAppService> services)
 	{
-		private readonly ILogger _logger;
-		private readonly IEnumerable<IAppService> _services;
-		private readonly CancellationTokenSource _cts = new();
+		_logger = logger;
+		_services = services;
+	}
 
-		public DawdlerHostedService(
-			ILogger<DawdlerHostedService> logger,
-			IEnumerable<IAppService> services)
+	public Task StartAsync(CancellationToken token)
+	{
+		_logger.LogDebug(@"Start DawdlerHostedService");
+
+		foreach (IAppService service in _services)
 		{
-			_logger = logger;
-			_services = services;
+			service.StartAsync(_cts.Token).Forget();
 		}
 
-		public Task StartAsync(CancellationToken token)
-		{
-			_logger.LogDebug(@"Start DawdlerHostedService");
+		return Task.CompletedTask;
+	}
 
-			foreach (var service in _services)
-			{
-				service.StartAsync(_cts.Token).Forget();
-			}
+	public Task StopAsync(CancellationToken token)
+	{
+		_logger.LogDebug(@"Stop DawdlerHostedService");
+		_cts.Cancel();
 
-			return Task.CompletedTask;
-		}
-
-		public Task StopAsync(CancellationToken token)
-		{
-			_logger.LogDebug(@"Stop DawdlerHostedService");
-			_cts.Cancel();
-
-			return Task.CompletedTask;
-		}
+		return Task.CompletedTask;
 	}
 }

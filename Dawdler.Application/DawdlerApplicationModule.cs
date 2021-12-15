@@ -1,9 +1,8 @@
 using Volo.Abp.Modularity;
 
-namespace Dawdler
+namespace Dawdler;
+
+[DependsOn(typeof(DawdlerDomainModule))]
+public class DawdlerApplicationModule : AbpModule
 {
-	[DependsOn(typeof(DawdlerDomainModule))]
-	public class DawdlerApplicationModule : AbpModule
-	{
-	}
 }

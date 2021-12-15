@@ -1,23 +1,19 @@
 using BilibiliLiveRecordDownLoader.Shared.Utils;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 
-namespace Dawdler
+namespace Dawdler;
+
+public interface IAppService : ITransientDependency
 {
-	public interface IAppService : ITransientDependency
+	ValueTask StartAsync(CancellationToken token);
+
+	protected static async ValueTask<TimeSpan> GetNextDayCountdownAsync()
 	{
-		ValueTask StartAsync(CancellationToken token);
+		var now = await Ntp.GetCurrentTimeAsync();
 
-		protected static async ValueTask<TimeSpan> GetNextDayCountdownAsync()
-		{
-			var now = await Ntp.GetCurrentTimeAsync();
+		now = now.AddHours(8);
+		var nextDay = now.Date.AddDays(1);
 
-			now = now.AddHours(8);
-			var nextDay = now.Date.AddDays(1);
-
-			return (nextDay - now).Add(TimeSpan.FromSeconds(1));
-		}
+		return (nextDay - now).Add(TimeSpan.FromSeconds(1));
 	}
 }

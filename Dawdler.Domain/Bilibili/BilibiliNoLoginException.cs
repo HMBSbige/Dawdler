@@ -1,10 +1,7 @@
-using System;
+namespace Dawdler.Bilibili;
 
-namespace Dawdler.Bilibili
+public class BilibiliNoLoginException : Exception
 {
-	public class BilibiliNoLoginException : Exception
-	{
-		public BilibiliNoLoginException() : base(@"未登录") { }
-		public BilibiliNoLoginException(string message) : base(message) { }
-	}
+	public BilibiliNoLoginException() : base(@"未登录") { }
+	public BilibiliNoLoginException(string message) : base(message) { }
 }

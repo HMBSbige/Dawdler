@@ -1,8 +1,7 @@
-namespace Dawdler.Utils
+namespace Dawdler.Utils;
+
+public static class HttpClientName
 {
-	public static class HttpClientName
-	{
-		public const string Bilibili = @"Bilibili";
-		public const string Baidu = @"Baidu";
-	}
+	public const string Bilibili = @"Bilibili";
+	public const string Baidu = @"Baidu";
 }

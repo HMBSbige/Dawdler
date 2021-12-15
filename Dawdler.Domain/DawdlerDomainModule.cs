@@ -1,8 +1,7 @@
 using Volo.Abp.Modularity;
 
-namespace Dawdler
+namespace Dawdler;
+
+public class DawdlerDomainModule : AbpModule
 {
-	public class DawdlerDomainModule : AbpModule
-	{
-	}
 }

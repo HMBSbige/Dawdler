@@ -1,9 +1,8 @@
 using Dawdler.Baidu;
 
-namespace Dawdler.BaiduDailyTasks
+namespace Dawdler.BaiduDailyTasks;
+
+public interface IBaiduDailyTask : IDailyTask
 {
-	public interface IBaiduDailyTask : IDailyTask
-	{
-		BaiduUser? User { get; set; }
-	}
+	BaiduUser? User { get; set; }
 }

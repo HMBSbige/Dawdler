@@ -1,10 +1,9 @@
 using JetBrains.Annotations;
 
-namespace Dawdler.Tieba
+namespace Dawdler.Tieba;
+
+[UsedImplicitly]
+public class Anti
 {
-	[UsedImplicitly]
-	public class Anti
-	{
-		public string? tbs { get; set; }
-	}
+	public string? tbs { get; set; }
 }
