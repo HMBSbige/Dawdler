@@ -5,7 +5,7 @@
   <ItemGroup>
     <PackageReference Include="BilibiliLiveRecordDownLoader.Shared" Version="1.7.0" />
     <PackageReference Include="CryptoBase" Version="1.7.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.0.64" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.1.46" />
   </ItemGroup>
 
 </Project>
